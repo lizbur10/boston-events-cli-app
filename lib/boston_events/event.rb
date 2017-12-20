@@ -16,4 +16,25 @@ class BostonEvents::Event
 
     [event_1,event_2]
   end
+
+  def scrape_stage_events
+    stage_events = []
+    doc = Nokogiri::(open("http://calendar.artsboston.org/categories/stage/"))
+  end
+
+  def self.scrape_music_events
+
+  end
+
+  def self.scrape_art_events
+
+  end
+
+  def self.scrape_kids_events
+
+  end
+
+  def self.scrape_top_ten
+
+  end
 end
