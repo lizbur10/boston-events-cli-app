@@ -1,5 +1,2 @@
-require "boston_events/version"
-
-module BostonEvents
-  # Your code goes here...
-end
+require_relative './boston_events/version'
+require_relative './boston_events/cli'
