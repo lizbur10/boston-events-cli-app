@@ -17,9 +17,13 @@ class BostonEvents::Event
     [event_1,event_2]
   end
 
-  def scrape_stage_events
+  def self.scrape_stage_events
     stage_events = []
-    doc = Nokogiri::(open("http://calendar.artsboston.org/categories/stage/"))
+    doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories/stage/"))
+    binding.pry
+    name = doc.search("article.category-detail h1.p-ttl").text  ##Featured event wrapped in article.category-detail
+    dates = doc.search("article.category-detail div.month").text.split("\n")[1].strip + " " + doc.search("article.category-detail div.month").text.split("\n")[2].strip
+    presented_by = doc.search("article.category-detail p.meta.auth a")[0].text
   end
 
   def self.scrape_music_events

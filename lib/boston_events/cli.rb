@@ -44,9 +44,7 @@ class BostonEvents::CLI
   def puts_events
     @events.each { | event | puts "#{event.name} - #{event.dates} - #{event.presented_by}" }
   end
-    
-  end
-
+  
   def goodbye
     puts
     puts "Thanks for stopping by -- come back often to check out what's going on around town!"
