@@ -1,2 +1,5 @@
 require_relative './boston_events/version'
 require_relative './boston_events/cli'
+require_relative './boston_events/category'
+require_relative './boston_events/presented_by'
+require_relative './boston_events/venue'

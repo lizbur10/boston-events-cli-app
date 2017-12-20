@@ -15,15 +15,15 @@ class BostonEvents::CLI
     while input != "exit"
       input = gets.strip.downcase
       if input == "1"
-        @events = list_events("stage")
+        @events = BostonEvents::Category.list_events("stage")
       elsif input == "2"
-        @events = list_events("music")
+        @events = BostonEvents::Category.list_events("music")
       elsif input == "3"
-        @events = list_events("art")
+        @events = BostonEvents::Category.list_events("art")
       elsif input == "4"
-        @events = list_events("kids")
+        @events = BostonEvents::Category.list_events("kids")
       elsif input == "5"
-        @events = list_events("top_ten")
+        @events = BostonEvents::Category.list_events("top_ten")
       elsif input == "exit"
         return
       else
@@ -33,19 +33,12 @@ class BostonEvents::CLI
     end
   end
 
-  def list_categories 
+  def list_categories
     puts "1. Stage"
     puts "2. Music"
     puts "3. Art"
     puts "4. Kids"
     puts "5. Top Ten"
-  end
-
-  def list_events(category)
-    puts <<-DOC
-      1. A Christmas Celtic Sojourn with Brian O'Donovan in... - Presented by WGBH - Dec 14 - 22
-      2. She Loves Me - Presented by Greater Boston Stage Company - Nov 24 - Dec 23
-    DOC
   end
 
   def goodbye
