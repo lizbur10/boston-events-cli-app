@@ -38,11 +38,9 @@ class BostonEvents::Event
     # dates_list = doc.search("")
 
     presented_by_list = doc.css("article.category-itm p.meta")
-    index = 0
     event_presented_by = []
-    presented_by_list.each do | presented_by |
-      event_presented_by[index] = presented_by.text.strip
-      index += 1
+    presented_by_list.each_with_index do | presented_by, index |
+      event_presented_by[index] = presented_by.text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
     end
 
   end
