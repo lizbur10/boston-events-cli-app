@@ -37,8 +37,14 @@ class BostonEvents::Event
 
     # dates_list = doc.search("")
 
-    presented_by_list = doc.search("article.category-item div.category-t p.meta").text
-    # presented_by_list.each_with_index { | presented_by_value, index | presented_by = presented_by_value[index] }
+    presented_by_list = doc.css("article.category-itm p.meta")
+    index = 0
+    event_presented_by = []
+    presented_by_list.each do | presented_by |
+      event_presented_by[index] = name.text.strip
+      index += 1
+    end
+
   end
 
   def self.scrape_music_events
