@@ -25,7 +25,9 @@ class BostonEvents::Event
     name = doc.search("article.category-detail h1.p-ttl").text
     dates = doc.search("article.category-detail div.month").text.split("\n")[1].strip + " " + doc.search("article.category-detail div.month").text.split("\n")[2].strip
     presented_by = doc.search("article.category-detail p.meta.auth a")[0].text
+
     ## Listed items - list wrapped in section.list-category; individual events wrapped in article.category-item
+    ## NAME
     name_list = doc.search("h2.category-ttl")
     index = 0
     event_name = []
@@ -35,8 +37,14 @@ class BostonEvents::Event
     end
     binding.pry
 
-    # dates_list = doc.search("")
-
+    ## DATES
+    dates_list = doc.search("article.category-itm div.left-event-time.evt-date-bubble")
+    # event_dates = []
+    dates_list.each_with_index do | event_dates |
+      puts event_dates.search("div.month")[0].text
+      puts event_dates.search("div.date")[0].text
+    end
+    ## PRESENTED BY
     presented_by_list = doc.css("article.category-itm p.meta")
     event_presented_by = []
     presented_by_list.each_with_index do | presented_by, index |
