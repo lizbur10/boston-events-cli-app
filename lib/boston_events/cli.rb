@@ -15,7 +15,8 @@ class BostonEvents::CLI
     while input != "exit"
       input = gets.strip.downcase
       if input == "1"
-        @events = BostonEvents::Category.list_events("stage")
+        # @events = BostonEvents::Event.list_events("stage")
+        @events = BostonEvents::Event.scrape_stage_events
       elsif input == "2"
         @events = BostonEvents::Category.list_events("music")
       elsif input == "3"
@@ -44,7 +45,7 @@ class BostonEvents::CLI
   def puts_events
     @events.each { | event | puts "#{event.name} - #{event.dates} - #{event.presented_by}" }
   end
-  
+
   def goodbye
     puts
     puts "Thanks for stopping by -- come back often to check out what's going on around town!"

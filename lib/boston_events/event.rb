@@ -27,8 +27,17 @@ class BostonEvents::Event
     presented_by = doc.search("article.category-detail p.meta.auth a")[0].text
     ## Listed items - list wrapped in section.list-category; individual events wrapped in article.category-item
     name_list = doc.search("h2.category-ttl")
-    # name_list.each_with_index { | event_title, index | name = event_title[index] }
-    dates_list = doc.search("")
+    index = 0
+    name_list.each do | name |
+      event_name[index] = name.text
+      index += 1
+    end
+    binding.pry
+#     nodes = allnodes.xpath('//folder')
+# nodes.each do |node|
+#   puts "name => #{node.attributes['name']}"
+# end
+    # dates_list = doc.search("")
 
     presented_by_list = doc.search("p.meta")
     # presented_by_list.each_with_index { | presented_by_value, index | presented_by = presented_by_value[index] }
