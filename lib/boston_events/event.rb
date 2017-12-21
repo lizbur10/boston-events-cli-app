@@ -42,8 +42,11 @@ class BostonEvents::Event
     # event_dates = []
     dates_list.each_with_index do | event_dates |
       puts event_dates.search("div.month")[0].text
-      puts event_dates.search("div.date")[0].text
+      if event_dates.search("div.date")[0]
+        puts event_dates.search("div.date")[0].text
+      end
     end
+    
     ## PRESENTED BY
     presented_by_list = doc.css("article.category-itm p.meta")
     event_presented_by = []
