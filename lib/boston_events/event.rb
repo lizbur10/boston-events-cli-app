@@ -41,7 +41,7 @@ class BostonEvents::Event
     index = 0
     event_presented_by = []
     presented_by_list.each do | presented_by |
-      event_presented_by[index] = name.text.strip
+      event_presented_by[index] = presented_by.text.strip
       index += 1
     end
 
