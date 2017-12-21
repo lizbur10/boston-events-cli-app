@@ -20,7 +20,7 @@ class BostonEvents::Event
   def self.scrape_stage_events
     stage_events = []
     doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories/stage/"))
-    # binding.pry
+    binding.pry
     ## Featured Item - wrapped in article.category-detail
     name = doc.search("article.category-detail h1.p-ttl").text
     dates = doc.search("article.category-detail div.month").text.split("\n")[1].strip + " " + doc.search("article.category-detail div.month").text.split("\n")[2].strip
@@ -34,13 +34,10 @@ class BostonEvents::Event
       index += 1
     end
     binding.pry
-#     nodes = allnodes.xpath('//folder')
-# nodes.each do |node|
-#   puts "name => #{node.attributes['name']}"
-# end
+
     # dates_list = doc.search("")
 
-    presented_by_list = doc.search("p.meta")
+    presented_by_list = doc.search("article.category-item div.category-t p.meta").text
     # presented_by_list.each_with_index { | presented_by_value, index | presented_by = presented_by_value[index] }
   end
 
