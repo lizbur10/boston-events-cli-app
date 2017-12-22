@@ -30,35 +30,35 @@ class BostonEvents::Event
     doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories/stage/"))
     binding.pry
 
-    ## Featured Item at the top of the page
     scrape_featured_item(doc)
     scrape_listed_items(doc)
   end
 
-  ## Listed items - list wrapped in section.list-category; individual events wrapped in article.category-item
-  ## NAME
-  def self.scrape_listed_items(doc)
+  def self.scrape_featured_item(doc)
     event = self.new
-    item_list = doc.search("section.list-category") #.each_with_index do | event, index |
-      event.name = item_list.search("h2.category-ttl")[index].text.strip
-      dates = doc.search("article.category-itm div.left-event-time.evt-date-bubble")[0]
+    event.name = doc.search("article.category-detail h1.p-ttl").text
+    ########Refactor DATES code using code for scrape_listed_events
+    event.dates = doc.search("article.category-detail div.month").text.split("\n")[1].strip + " " + doc.search("article.category-detail div.month").text.split("\n")[2].strip
+    event.presented_by = doc.search("article.category-detail p.meta.auth a")[0].text
+    @@all << event
+  end
+
+  def self.scrape_listed_items(doc)
+    item_list = doc.search("section.list-category article.category-itm").each_with_index do | this_event, index |
+      event = self.new
+      event.name = this_event.search("h2.category-ttl").text.strip
+      dates = this_event.search("div.left-event-time.evt-date-bubble")
       if dates.search("div.date")
         begin_date = dates.search("div.month").text.gsub(/\s+/," ").strip
         end_date = dates.search("div.date").text.gsub(/\s+/," ").strip
         event.dates = "#{begin_date} - #{end_date}"
       else
         event.dates = dates.search("div.month").text.gsub(/\s+/," ").strip
-      end
-      event.presented_by = item_list.search("article.category-itm p.meta")[0].text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
-
-      # ## PRESENTED BY
-      # presented_by_list = doc.css("article.category-itm p.meta")
-      # event_presented_by = []
-      # presented_by_list.each_with_index do | presented_by, index |
-      #   event_presented_by[index] = presented_by.text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
-      # end
-    end
-  end
+      end #if/else
+      event.presented_by = this_event.search("p.meta").text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
+      @@all << event
+    end #each with index
+  end #scrape_listed_items
 
   # def self.scrape_music_events
   #
@@ -76,12 +76,5 @@ class BostonEvents::Event
   #
   # end
 
-  def self.scrape_featured_item(doc)
-    event = self.new
-    event.name = doc.search("article.category-detail h1.p-ttl").text
-    event.dates = doc.search("article.category-detail div.month").text.split("\n")[1].strip + " " + doc.search("article.category-detail div.month").text.split("\n")[2].strip
-    event.presented_by = doc.search("article.category-detail p.meta.auth a")[0].text
-    @@all << event
-  end
 
 end
