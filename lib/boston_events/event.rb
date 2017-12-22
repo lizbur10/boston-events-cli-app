@@ -23,21 +23,19 @@ class BostonEvents::Event
   end
 
   def self.puts_events
-    @@all.each { | event | puts "#{event.name} - #{event.dates} - #{event.presented_by}" }
+    @@all.each.with_index(1) { | event, index | puts "#{index}. #{event.name}, #{event.dates}, presented by #{event.presented_by}" }
   end
 
   def self.scrape_stage_events
     doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories/stage/"))
-    binding.pry
-
     scrape_featured_item(doc)
     scrape_listed_items(doc)
   end
 
+  ########Refactor featured item code to try to make consistent with listed item code and modularize
   def self.scrape_featured_item(doc)
     event = self.new
     event.name = doc.search("article.category-detail h1.p-ttl").text
-    ########Refactor DATES code using code for scrape_listed_events
     event.dates = doc.search("article.category-detail div.month").text.split("\n")[1].strip + " " + doc.search("article.category-detail div.month").text.split("\n")[2].strip
     event.presented_by = doc.search("article.category-detail p.meta.auth a")[0].text
     @@all << event
@@ -48,10 +46,8 @@ class BostonEvents::Event
       event = self.new
       event.name = this_event.search("h2.category-ttl").text.strip
       dates = this_event.search("div.left-event-time.evt-date-bubble")
-      if dates.search("div.date")
-        begin_date = dates.search("div.month").text.gsub(/\s+/," ").strip
-        end_date = dates.search("div.date").text.gsub(/\s+/," ").strip
-        event.dates = "#{begin_date} - #{end_date}"
+      if dates.search("div.date").length > 0
+        event.dates = dates.search("div.month").text.gsub(/\s+/," ").strip + " - " + dates.search("div.date").text.gsub(/\s+/," ").strip
       else
         event.dates = dates.search("div.month").text.gsub(/\s+/," ").strip
       end #if/else
