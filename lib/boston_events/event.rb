@@ -29,9 +29,18 @@ class BostonEvents::Event
   ## Top Ten
   def self.scrape_home_page
     doc = Nokogiri::HTML(open("http://calendar.artsboston.org/"))
-    puts "coding in progress - pick another number"
-    scrape_featured_item(doc)
-    scrape_listed_items(doc)
+    scrape_top_ten(doc)
+  end
+
+  def self.scrape_top_ten(doc)
+    item_list = doc.search("section.list-blog article.blog-itm").each_with_index do | this_event, index |
+      event = self.new
+      event.name = this_event.search("h2.blog-ttl").text.strip
+      dates = this_event.search("div.left-event-time.evt-date-bubble")
+      event.dates = get_event_dates(dates)
+      event.presented_by = this_event.search("p.meta")[0].text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
+      @@all << event
+    end #each with index
   end
 
   def self.scrape_featured_item(doc)
