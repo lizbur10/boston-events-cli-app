@@ -7,17 +7,10 @@ class BostonEvents::Event
   end
 
   def self.list_events(category)
-    case category
-    when "stage"
-      scrape_stage_events
-    when "music"
-      scrape_music_events
-    when "art"
-      scrape_art_events
-    when "kids"
-      scrape_kids_events
-    when "top-ten"
-      scrape_top_ten
+    if category == 'top-ten'
+      scrape_home_page
+    else
+      scrape_events(category)
     end
     puts_events
   end
@@ -27,43 +20,24 @@ class BostonEvents::Event
       puts "Type a number to see more info about that event or type list to see the list of categories again"
   end
 
-  def self.scrape_stage_events
-    doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories/stage/"))
+  def self.scrape_events(category)
+    doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories/#{category}/"))
     scrape_featured_item(doc)
     scrape_listed_items(doc)
   end
 
-  def self.scrape_music_events
-    doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories/music/"))
-    scrape_featured_item(doc)
-    scrape_listed_items(doc)
-    end
-
-  def self.scrape_art_events ## This one broke
-    doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories/art/"))
+  ## Top Ten
+  def self.scrape_home_page
+    doc = Nokogiri::HTML(open("http://calendar.artsboston.org/"))
+    puts "coding in progress - pick another number"
     scrape_featured_item(doc)
     scrape_listed_items(doc)
   end
 
-  def self.scrape_kids_events
-    doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories/kids/"))
-    scrape_featured_item(doc)
-    scrape_listed_items(doc)
-  end
-
-  ## This one will be different...
-  def self.scrape_top_ten
-    doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories//"))
-    scrape_featured_item(doc)
-    scrape_listed_items(doc)
-  end
-
-  ########Refactor featured item code to try to make consistent with listed item code and modularize
   def self.scrape_featured_item(doc)
     event = self.new
     event.name = doc.search("article.category-detail h1.p-ttl").text
-    # event.dates = doc.search("article.category-detail div.month").text.split("\n")[1].strip + " " + doc.search("article.category-detail div.month").text.split("\n")[2].strip
-    dates = doc.search("article.category-detail div.month")
+    dates = doc.search("article.category-detail div.month") ## Does this work for all featured items????
     event.dates = get_event_dates(dates)
     event.presented_by = doc.search("article.category-detail p.meta.auth a")[0].text
     @@all << event
@@ -78,7 +52,7 @@ class BostonEvents::Event
       event.presented_by = this_event.search("p.meta").text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
       @@all << event
     end #each with index
-  end #scrape_listed_items
+  end
 
   def self.get_event_dates(dates)
     if dates.search("div.date").length > 0
