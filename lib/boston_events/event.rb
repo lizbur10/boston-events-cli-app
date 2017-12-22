@@ -2,7 +2,7 @@ class BostonEvents::Event
   attr_accessor :name, :dates, :presented_by, :venue
 
   # def self.list_events(category)
-  def self.list_events #will add category in later
+  def self.list_events #(category)
 
     event_1 = self.new
     event_1.name = "A Christmas Celtic Sojourn with Brian O'Donovan in Boston"
@@ -21,10 +21,13 @@ class BostonEvents::Event
     stage_events = []
     doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories/stage/"))
     binding.pry
+
     ## Featured Item - wrapped in article.category-detail
-    name = doc.search("article.category-detail h1.p-ttl").text
-    dates = doc.search("article.category-detail div.month").text.split("\n")[1].strip + " " + doc.search("article.category-detail div.month").text.split("\n")[2].strip
-    presented_by = doc.search("article.category-detail p.meta.auth a")[0].text
+    # def scrape_featured_item
+      name = doc.search("article.category-detail h1.p-ttl").text
+      dates = doc.search("article.category-detail div.month").text.split("\n")[1].strip + " " + doc.search("article.category-detail div.month").text.split("\n")[2].strip
+      presented_by = doc.search("article.category-detail p.meta.auth a")[0].text
+    # end
 
     ## Listed items - list wrapped in section.list-category; individual events wrapped in article.category-item
     ## NAME
@@ -39,14 +42,18 @@ class BostonEvents::Event
 
     ## DATES
     dates_list = doc.search("article.category-itm div.left-event-time.evt-date-bubble")
-    # event_dates = []
-    dates_list.each_with_index do | event_dates |
-      puts event_dates.search("div.month")[0].text
-      if event_dates.search("div.date")[0]
-        puts event_dates.search("div.date")[0].text
+    event_dates = []
+    dates_list.each_with_index do | dates, index |
+      # puts event_dates.search("div.month")[0].text
+      if dates.search("div.date")[0]
+        begin_date = dates.search("div.month")[0].text.gsub(/\s+/," ").strip
+        end_date = dates.search("div.date")[0].text.gsub(/\s+/," ").strip
+        event_dates[index] = "#{begin_date} - #{end_date}"
+      else
+        event_dates[index] = dates.search("div.month")[0].text.gsub(/\s+/," ").strip
       end
     end
-    
+
     ## PRESENTED BY
     presented_by_list = doc.css("article.category-itm p.meta")
     event_presented_by = []
