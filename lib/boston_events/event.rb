@@ -2,22 +2,16 @@ class BostonEvents::Event
   attr_accessor :name, :dates, :presented_by, :venue
   @@all = []
 
-  def all
+  def self.all
     @@all
   end
 
   def self.list_events(category)
     if category == 'top-ten'
-      scrape_home_page
+      scrape_top_ten
     else
       scrape_events(category)
     end
-    puts_events
-  end
-
-  def self.puts_events ## Need to switch this to do it by category instead of @@all
-    @@all.each.with_index(1) { | event, index | puts "#{index}. #{event.name}, #{event.dates}, presented by #{event.presented_by}" }
-      puts "Type a number to see more info about that event or type list to see the list of categories again"
   end
 
   def self.scrape_events(category)
@@ -26,13 +20,8 @@ class BostonEvents::Event
     scrape_listed_items(doc)
   end
 
-  ## Top Ten
-  def self.scrape_home_page
+  def self.scrape_top_ten
     doc = Nokogiri::HTML(open("http://calendar.artsboston.org/"))
-    scrape_top_ten(doc)
-  end
-
-  def self.scrape_top_ten(doc)
     item_list = doc.search("section.list-blog article.blog-itm").each_with_index do | this_event, index |
       event = self.new
       event.name = this_event.search("h2.blog-ttl").text.strip

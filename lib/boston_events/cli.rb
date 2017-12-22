@@ -31,6 +31,7 @@ class BostonEvents::CLI
         puts "I'm not sure what you want - please enter a category number or type exit"
         call
       end
+      puts_events
     end
   end
 
@@ -40,6 +41,13 @@ class BostonEvents::CLI
     puts "3. Art"
     puts "4. Kids"
     puts "5. Top Ten"
+  end
+
+  def puts_events ## Need to switch this to do it by category instead of @@all
+    BostonEvents::Event.all.each.with_index(1) do | event, index |
+      ##need to implement category info here
+      puts "#{index}. #{event.name}, #{event.dates}, presented by #{event.presented_by}"
+    end
   end
 
   def goodbye
