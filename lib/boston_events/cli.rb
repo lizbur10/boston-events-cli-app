@@ -16,15 +16,15 @@ class BostonEvents::CLI
       input = gets.strip.downcase
       if input == "1"
         # @events = BostonEvents::Event.list_events("stage")
-        @events = BostonEvents::Event.list_events
+        @events = BostonEvents::Event.list_events("stage")
       elsif input == "2"
-        @events = BostonEvents::Category.list_events("music")
+        @events = BostonEvents::Event.list_events("music")
       elsif input == "3"
-        @events = BostonEvents::Category.list_events("art")
+        @events = BostonEvents::Event.list_events("art")
       elsif input == "4"
-        @events = BostonEvents::Category.list_events("kids")
+        @events = BostonEvents::Event.list_events("kids")
       elsif input == "5"
-        @events = BostonEvents::Category.list_events("top_ten")
+        @events = BostonEvents::Event.list_events("top-ten")
       elsif input == "exit"
         return
       else
