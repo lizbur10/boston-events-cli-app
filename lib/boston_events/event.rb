@@ -1,10 +1,16 @@
 class BostonEvents::Event
   attr_accessor :name, :dates, :presented_by, :venue, :category
-  # @@all = []
-  #
-  # def self.all
-  #   @@all
-  # end
+  @@all = []
+
+  def self.all
+    @@all
+  end
+
+  def save
+    if !self.class.all.detect { | saved_event | saved_event.name == self.name }
+      @@all << self
+    end
+  end
 
   def self.list_events(category)
     if category.events.length == 0 #to keep events from being created twice if the same category is chosen more than once
@@ -31,7 +37,7 @@ class BostonEvents::Event
       event.dates = get_event_dates(dates)
       event.presented_by = this_event.search("p.meta")[0].text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
       event.add_category(category)
-      # @@all << event
+      event.save
     end #each with index
   end
 
@@ -42,7 +48,7 @@ class BostonEvents::Event
     event.dates = get_event_dates(dates)
     event.presented_by = doc.search("article.category-detail p.meta.auth a")[0].text
     event.add_category(category)
-    # @@all << event
+    event.save
   end
 
   def self.scrape_listed_items(doc, category)
@@ -53,7 +59,7 @@ class BostonEvents::Event
       event.dates = get_event_dates(dates)
       event.presented_by = this_event.search("p.meta").text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
       event.add_category(category)
-      # @@all << event
+      event.save
     end #each with index
   end
 
@@ -66,7 +72,7 @@ class BostonEvents::Event
   end
 
   def add_category(category)
-    event.category = category
+    self.category = category
     category.events << self
   end
 

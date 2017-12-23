@@ -9,7 +9,7 @@ class BostonEvents::CLI
 
   def menu
     puts "What's going on in Boston"
-    puts "Select a category or type exit:"
+    puts "Select a category by number or type exit"
     list_categories
     input = nil
     while input != "exit"
@@ -31,7 +31,7 @@ class BostonEvents::CLI
         puts "I'm not sure what you want - please enter a category number or type exit"
         call
       end
-      category = find_or_create_by_name(category_name)
+      category = BostonEvents::Category.find_or_create_by_name(category_name)
       BostonEvents::Event.list_events(category)
       puts_events(category)
     end
@@ -43,16 +43,14 @@ class BostonEvents::CLI
     puts "3. Art"
     puts "4. Kids"
     puts "5. Top Ten"
+    puts "6. All events (not yet implemented)"
   end
 
-  def puts_events(category) ########## NEEDS FIXED!
-    BostonEvents::Category.all.each do | event |
-      ##need to implement category info here
-      i = 0
-      if event.category == category
-        i += 1
-        puts "#{i}. #{event.name}, #{event.dates}, presented by #{event.presented_by}"
-      end
+  def puts_events(category)
+    puts
+    puts "Events in category: #{category.name.capitalize}"
+    category.events.each.with_index(1) do | event, index |
+      puts "#{index}. #{event.name}, #{event.dates}, presented by #{event.presented_by}"
     end
   end
 
