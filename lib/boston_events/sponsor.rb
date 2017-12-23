@@ -1,0 +1,3 @@
+class BostonEvents::Sponsor
+
+end

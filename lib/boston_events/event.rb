@@ -1,5 +1,5 @@
 class BostonEvents::Event
-  attr_accessor :name, :dates, :presented_by, :venue, :category
+  attr_accessor :name, :dates, :sponsor, :venue, :category
   @@all = []
 
   def self.all
@@ -35,9 +35,9 @@ class BostonEvents::Event
       event.name = this_event.search("h2.blog-ttl").text.strip
       dates = this_event.search("div.left-event-time.evt-date-bubble")
       event.dates = get_event_dates(dates)
-      event.presented_by = this_event.search("p.meta")[0].text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
-      ### Add venue info
-      #event.venue = this_event.search("p.meta")[1].text
+      event.sponsor = this_event.search("p.meta")[0].text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
+      venue_name = this_event.search("p.meta")[0].text.split(" at ")[1].strip
+      event.add_venue(venue_name)
       event.add_category(category)
       event.save
     end #each with index
@@ -48,8 +48,10 @@ class BostonEvents::Event
     event.name = doc.search("article.category-detail h1.p-ttl").text
     dates = doc.search("article.category-detail div.left-event-time.evt-date-bubble")
     event.dates = get_event_dates(dates)
-    event.presented_by = doc.search("article.category-detail p.meta.auth a")[0].text
+    event.sponsor = doc.search("article.category-detail p.meta.auth a")[0].text
     event.add_category(category)
+    venue_name = doc.search("p.meta")[0].text.split(" at ")[1].strip
+    event.add_venue(venue_name)
     event.save
   end
 
@@ -59,7 +61,10 @@ class BostonEvents::Event
       event.name = this_event.search("h2.category-ttl").text.strip
       dates = this_event.search("div.left-event-time.evt-date-bubble")
       event.dates = get_event_dates(dates)
-      event.presented_by = this_event.search("p.meta").text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
+      event.sponsor = this_event.search("p.meta").text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
+      ### Add venue info
+      venue_name = this_event.search("p.meta")[0].text.split(" at ")[1].strip
+      event.add_venue(venue_name)
       event.add_category(category)
       event.save
     end #each with index
@@ -76,6 +81,12 @@ class BostonEvents::Event
   def add_category(category)
     self.category = category
     category.events << self
+  end
+
+  def add_venue(venue_name)
+    venue = BostonEvents::Venue.find_or_create_by_name(venue_name)
+    self.venue = venue
+    venue.events << self
   end
 
 end

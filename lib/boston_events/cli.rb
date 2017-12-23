@@ -4,8 +4,6 @@ class BostonEvents::CLI
   def call
     menu
     # list_events
-    binding.pry
-    
     goodbye
   end
 
@@ -29,7 +27,7 @@ class BostonEvents::CLI
         category_name = "top-ten"
       when "exit"
         return
-      else
+      else ## Something's not working right here -- typed 6, got message & reload, typed exit and it printed top ten 
         puts "I'm not sure what you want - please enter a category number or type exit"
         call
       end
@@ -52,7 +50,7 @@ class BostonEvents::CLI
     puts
     puts "Events in category: #{category.name.capitalize}"
     category.events.each.with_index(1) do | event, index |
-      puts "#{index}. #{event.name}, #{event.dates}, presented by #{event.presented_by}"
+      puts "#{index}. #{event.name}, #{event.dates}, presented by #{event.sponsor}"
     end
   end
 
