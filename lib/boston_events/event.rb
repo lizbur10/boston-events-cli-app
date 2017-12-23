@@ -7,20 +7,22 @@ class BostonEvents::Event
   # end
 
   def self.list_events(category)
-    if category == 'top-ten'
-      scrape_top_ten
-    else
-      scrape_events(category)
+    if category.events.length == 0 #to keep events from being created twice if the same category is chosen more than once
+      if category.name == 'top-ten'
+        scrape_top_ten(category)
+      else
+        scrape_events(category)
+      end
     end
   end
 
   def self.scrape_events(category)
-    doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories/#{category}/"))
+    doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories/#{category.name}/"))
     scrape_featured_item(doc, category)
     scrape_listed_items(doc, category)
   end
 
-  def self.scrape_top_ten
+  def self.scrape_top_ten(category)
     doc = Nokogiri::HTML(open("http://calendar.artsboston.org/"))
     item_list = doc.search("section.list-blog article.blog-itm").each_with_index do | this_event, index |
       event = self.new
@@ -28,29 +30,29 @@ class BostonEvents::Event
       dates = this_event.search("div.left-event-time.evt-date-bubble")
       event.dates = get_event_dates(dates)
       event.presented_by = this_event.search("p.meta")[0].text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
-      event.category = event.add_category("top-ten")
+      event.add_category(category)
       # @@all << event
     end #each with index
   end
 
-  def self.scrape_featured_item(doc, category_name)
+  def self.scrape_featured_item(doc, category)
     event = self.new
     event.name = doc.search("article.category-detail h1.p-ttl").text
-    dates = doc.search("article.category-detail div.month") ## Does this work for all featured items????
+    dates = doc.search("article.category-detail div.month") ######## Does this work for all featured items????
     event.dates = get_event_dates(dates)
     event.presented_by = doc.search("article.category-detail p.meta.auth a")[0].text
-    event.category = event.add_category(category_name)
+    event.add_category(category)
     # @@all << event
   end
 
-  def self.scrape_listed_items(doc, category_name)
+  def self.scrape_listed_items(doc, category)
     item_list = doc.search("section.list-category article.category-itm").each_with_index do | this_event, index |
       event = self.new
       event.name = this_event.search("h2.category-ttl").text.strip
       dates = this_event.search("div.left-event-time.evt-date-bubble")
       event.dates = get_event_dates(dates)
       event.presented_by = this_event.search("p.meta").text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
-      event.category = event.add_category(category_name)
+      event.add_category(category)
       # @@all << event
     end #each with index
   end
@@ -63,9 +65,9 @@ class BostonEvents::Event
     end
   end
 
-  def add_category(category_name)
-    event_category = BostonEvents::Category.find_or_create_by_name(category_name)
-    event_category << self
+  def add_category(category)
+    event.category = category
+    category.events << self
   end
 
 end

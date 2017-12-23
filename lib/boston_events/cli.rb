@@ -16,22 +16,23 @@ class BostonEvents::CLI
       input = gets.strip.downcase
       case input
       when "1"
-        category = "stage"
+        category_name = "stage"
       when "2"
-        category = "music"
+        category_name = "music"
       when "3"
-        category = "art"
+        category_name = "art"
       when "4"
-        category = "kids"
+        category_name = "kids"
       when "5"
-        category = "top-ten"
+        category_name = "top-ten"
       when "exit"
         return
       else
         puts "I'm not sure what you want - please enter a category number or type exit"
         call
       end
-      @events = BostonEvents::Event.list_events(category)
+      category = find_or_create_by_name(category_name)
+      BostonEvents::Event.list_events(category)
       puts_events(category)
     end
   end
@@ -44,7 +45,7 @@ class BostonEvents::CLI
     puts "5. Top Ten"
   end
 
-  def puts_events(category)
+  def puts_events(category) ########## NEEDS FIXED!
     BostonEvents::Category.all.each do | event |
       ##need to implement category info here
       i = 0
