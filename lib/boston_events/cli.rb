@@ -35,6 +35,7 @@ class BostonEvents::CLI
       BostonEvents::Event.list_events(category)
       puts_events(category)
     end
+    binding.pry
   end
 
   def list_categories
@@ -50,12 +51,13 @@ class BostonEvents::CLI
     puts
     puts "Events in category: #{category.name.capitalize}"
     category.events.each.with_index(1) do | event, index |
-      puts "#{index}. #{event.name}, #{event.dates}, presented by #{event.sponsor}"
+      puts "#{index}. #{event.name}, #{event.dates}, presented by #{event.sponsor.name}"
     end
+    puts
   end
 
-  def goodbye
-    puts
-    puts "Thanks for stopping by -- come back often to check out what's going on around town!"
-  end
+#   def goodbye
+#     puts
+#     puts "Thanks for stopping by -- come back often to check out what's going on around town!"
+#   end
 end
