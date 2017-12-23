@@ -4,6 +4,8 @@ class BostonEvents::CLI
   def call
     menu
     # list_events
+    binding.pry
+    
     goodbye
   end
 
