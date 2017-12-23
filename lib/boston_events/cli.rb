@@ -14,24 +14,25 @@ class BostonEvents::CLI
     input = nil
     while input != "exit"
       input = gets.strip.downcase
-      if input == "1"
-        # @events = BostonEvents::Event.list_events("stage")
-        @events = BostonEvents::Event.list_events("stage")
-      elsif input == "2"
-        @events = BostonEvents::Event.list_events("music")
-      elsif input == "3"
-        @events = BostonEvents::Event.list_events("art")
-      elsif input == "4"
-        @events = BostonEvents::Event.list_events("kids")
-      elsif input == "5"
-        @events = BostonEvents::Event.list_events("top-ten")
-      elsif input == "exit"
+      case input
+      when "1"
+        category = "stage"
+      when "2"
+        category = "music"
+      when "3"
+        category = "art"
+      when "4"
+        category = "kids"
+      when "5"
+        category = "top-ten"
+      when "exit"
         return
       else
         puts "I'm not sure what you want - please enter a category number or type exit"
         call
       end
-      puts_events
+      @events = BostonEvents::Event.list_events(category)
+      puts_events(category)
     end
   end
 
@@ -43,10 +44,14 @@ class BostonEvents::CLI
     puts "5. Top Ten"
   end
 
-  def puts_events ## Need to switch this to do it by category instead of @@all
-    BostonEvents::Event.all.each.with_index(1) do | event, index |
+  def puts_events(category)
+    BostonEvents::Category.all.each do | event |
       ##need to implement category info here
-      puts "#{index}. #{event.name}, #{event.dates}, presented by #{event.presented_by}"
+      i = 0
+      if event.category == category
+        i += 1
+        puts "#{i}. #{event.name}, #{event.dates}, presented by #{event.presented_by}"
+      end
     end
   end
 

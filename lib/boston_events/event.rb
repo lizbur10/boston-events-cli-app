@@ -28,7 +28,7 @@ class BostonEvents::Event
       dates = this_event.search("div.left-event-time.evt-date-bubble")
       event.dates = get_event_dates(dates)
       event.presented_by = this_event.search("p.meta")[0].text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
-      event.category = BostonEvents::Category.find_or_create_by_name("top-ten")
+      event.category = event.add_category("top-ten")
       # @@all << event
     end #each with index
   end
@@ -39,7 +39,7 @@ class BostonEvents::Event
     dates = doc.search("article.category-detail div.month") ## Does this work for all featured items????
     event.dates = get_event_dates(dates)
     event.presented_by = doc.search("article.category-detail p.meta.auth a")[0].text
-    event.category = BostonEvents::Category.find_or_create_by_name(category_name)
+    event.category = event.add_category(category_name)
     # @@all << event
   end
 
@@ -50,7 +50,7 @@ class BostonEvents::Event
       dates = this_event.search("div.left-event-time.evt-date-bubble")
       event.dates = get_event_dates(dates)
       event.presented_by = this_event.search("p.meta").text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
-      event.category = BostonEvents::Category.find_or_create_by_name(category_name)
+      event.category = event.add_category(category_name)
       # @@all << event
     end #each with index
   end
@@ -61,6 +61,11 @@ class BostonEvents::Event
     else
       dates.search("div.month").text.gsub(/\s+/," ").strip
     end
+  end
+
+  def add_category(category_name)
+    event_category = BostonEvents::Category.find_or_create_by_name(category_name)
+    event_category << self
   end
 
 end
