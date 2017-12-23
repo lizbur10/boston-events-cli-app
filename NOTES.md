@@ -1,6 +1,6 @@
 To Do:
 
-1. Add venue functionality
+1. Add venue functionality - coded but needs to be checked - DONE
 2. Add sponsor functionality
 3. "More info" functionality
 4. Add "list by venue" functionality to CLI ???

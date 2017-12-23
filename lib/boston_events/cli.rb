@@ -4,7 +4,7 @@ class BostonEvents::CLI
   def call
     menu
     # list_events
-    goodbye
+    # goodbye
   end
 
   def menu
@@ -26,8 +26,8 @@ class BostonEvents::CLI
       when "5"
         category_name = "top-ten"
       when "exit"
-        return
-      else ## Something's not working right here -- typed 6, got message & reload, typed exit and it printed top ten 
+        abort ("Thanks for stopping by -- come back often to check out what's going on around town!")
+      else
         puts "I'm not sure what you want - please enter a category number or type exit"
         call
       end
