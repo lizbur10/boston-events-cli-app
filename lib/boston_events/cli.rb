@@ -66,7 +66,8 @@ class BostonEvents::CLI
     puts "Dates: #{event.dates}"
     puts "Presented by #{event.sponsor.name}"
     puts "Venue: #{event.venue.name}"
-    puts "Buy Tickets Here"
+    puts "Check for deals: #{event.deal_url}"
+    puts "Buy tickets through venue: #{event.website_url}"
   end # #puts_event_info
 
 end # Class

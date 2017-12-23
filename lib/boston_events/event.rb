@@ -1,5 +1,5 @@
 class BostonEvents::Event
-  attr_accessor :name, :dates, :sponsor, :venue, :category
+  attr_accessor :name, :dates, :sponsor, :venue, :deal_url, :website_url, :category
   @@all = []
 
   def self.all
@@ -39,6 +39,10 @@ class BostonEvents::Event
       event.add_sponsor(sponsor_name)
       venue_name = this_event.search("p.meta")[0].text.split(" at ")[1].strip
       event.add_venue(venue_name)
+      if this_event.search("div.b-btn.__inline_block_fix_space a")[1]
+        event.deal_url = this_event.search("div.b-btn.__inline_block_fix_space a")[1].attribute("href")
+      end
+      event.website_url = this_event.search("div.b-btn.__inline_block_fix_space a")[0].attribute("href")
       event.add_category(category)
       event.save
     end #each with index
@@ -49,11 +53,15 @@ class BostonEvents::Event
     event.name = doc.search("article.category-detail h1.p-ttl").text
     dates = doc.search("article.category-detail div.left-event-time.evt-date-bubble")
     event.dates = get_event_dates(dates)
-    event.add_category(category)
     sponsor_name = doc.search("article.category-detail p.meta.auth a")[0].text
     event.add_sponsor(sponsor_name)
     venue_name = doc.search("p.meta")[0].text.split(" at ")[1].strip
     event.add_venue(venue_name)
+    if doc.search("div.b-btn.cat-detail.__inline_block_fix_space a")[1]
+      event.deal_url = doc.search("div.b-btn.cat-detail.__inline_block_fix_space a")[1].attribute("href")
+    end
+    event.website_url = doc.search("div.b-btn.cat-detail.__inline_block_fix_space a")[0].attribute("href")
+    event.add_category(category)
     event.save
   end
 
@@ -63,11 +71,14 @@ class BostonEvents::Event
       event.name = this_event.search("h2.category-ttl").text.strip
       dates = this_event.search("div.left-event-time.evt-date-bubble")
       event.dates = get_event_dates(dates)
-      # event.sponsor = this_event.search("p.meta").text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
       sponsor_name = this_event.search("p.meta")[0].text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
       event.add_sponsor(sponsor_name)
       venue_name = this_event.search("p.meta")[0].text.split(" at ")[1].strip
       event.add_venue(venue_name)
+      if this_event.search("div.b-btn.category a")[1]
+        event.deal_url = this_event.search("div.b-btn.category a")[1].attribute("href")
+      end
+      event.website_url = this_event.search("div.b-btn.category a")[0].attribute("href")
       event.add_category(category)
       event.save
     end #each with index
