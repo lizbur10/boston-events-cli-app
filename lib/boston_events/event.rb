@@ -35,7 +35,6 @@ class BostonEvents::Event
       event.name = this_event.search("h2.blog-ttl").text.strip
       dates = this_event.search("div.left-event-time.evt-date-bubble")
       event.dates = get_event_dates(dates)
-      # event.sponsor = this_event.search("p.meta")[0].text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
       sponsor_name = this_event.search("p.meta")[0].text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
       event.add_sponsor(sponsor_name)
       venue_name = this_event.search("p.meta")[0].text.split(" at ")[1].strip
@@ -50,7 +49,6 @@ class BostonEvents::Event
     event.name = doc.search("article.category-detail h1.p-ttl").text
     dates = doc.search("article.category-detail div.left-event-time.evt-date-bubble")
     event.dates = get_event_dates(dates)
-    # event.sponsor = doc.search("article.category-detail p.meta.auth a")[0].text
     event.add_category(category)
     sponsor_name = doc.search("article.category-detail p.meta.auth a")[0].text
     event.add_sponsor(sponsor_name)
