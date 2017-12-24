@@ -3,12 +3,13 @@ class BostonEvents::CLI
 
   def call
     puts "What's going on in Boston"
-    menu
-    # list_events
-    # goodbye
+    select_category
+    BostonEvents::Event.list_events(category)
+    puts_events(category)
+
   end
 
-  def menu
+  def select_category
     puts "Select a category by number or type exit"
     list_categories
     input = nil
@@ -22,8 +23,10 @@ class BostonEvents::CLI
       when "3"
         category_name = "art"
       when "4"
-        category_name = "kids"
+        category_name = "culture"
       when "5"
+        category_name = "kids"
+      when "6"
         category_name = "top-ten"
       when "exit"
         abort ("Thanks for stopping by -- come back often to check out what's going on around town!")
@@ -32,8 +35,6 @@ class BostonEvents::CLI
         menu
       end # Case statement
       category = BostonEvents::Category.find_or_create_by_name(category_name)
-      BostonEvents::Event.list_events(category)
-      puts_events(category)
 
     end # While
   end # #menu
@@ -42,9 +43,10 @@ class BostonEvents::CLI
     puts "1. Stage"
     puts "2. Music"
     puts "3. Art"
-    puts "4. Kids"
-    puts "5. Top Ten"
-    puts "6. All events (not yet implemented)"
+    puts "4. Culture"
+    puts "5. Kids"
+    puts "6. Top Ten"
+    puts "7. All events (not yet implemented)"
   end # #list_categories
 
   def puts_events(category)
@@ -67,7 +69,7 @@ class BostonEvents::CLI
     puts "Presented by #{event.sponsor.name}"
     puts "Venue: #{event.venue.name}"
     puts "Check for deals: #{event.deal_url}" if event.deal_url
-    puts "Buy tickets through venue: #{event.website_url}" if event.website_url
+    puts "Official website: #{event.website_url}" if event.website_url
   end # #puts_event_info
 
   def choose_option(input, category)
