@@ -35,35 +35,48 @@ class BostonEvents::Event
       name: "h2.blog-ttl",
       dates: "div.left-event-time.evt-date-bubble",
       sponsor_and_venue_names: "p.meta",
-      deal_url: "div.b-btn.__inline_block_fix_space a",
-      website_url: "div.b-btn.__inline_block_fix_space a"
+      event_urls: "div.b-btn.__inline_block_fix_space a"
     }
   }
 
   def self.scrape_events(category)
-    binding.pry
     doc = Nokogiri::HTML(open(SCRAPE_SELECTORS[category.name][:url]))
-    binding.pry
+    item_list = doc.search(SCRAPE_SELECTORS[category.name][:iterate_over]).each_with_index do | this_event, index |
+      event = self.new
+      event.name = this_event.search(SCRAPE_SELECTORS[category.name][:name]).text.strip
+      dates = this_event.search(SCRAPE_SELECTORS[category.name][:dates])
+      event.dates = get_event_dates(dates)
+      sponsor_name = this_event.search(SCRAPE_SELECTORS[category.name][:sponsor_and_venue_names])[0].text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
+      event.add_sponsor(sponsor_name)
+      venue_name = this_event.search(SCRAPE_SELECTORS[category.name][:sponsor_and_venue_names])[0].text.split(" at ")[1].strip
+      event.add_venue(venue_name)
+      if this_event.search(SCRAPE_SELECTORS[category.name][:event_urls])[1]
+        event.deal_url = this_event.search(SCRAPE_SELECTORS[category.name][:event_urls])[1].attribute("href")
+      end
+      event.website_url = this_event.search(SCRAPE_SELECTORS[category.name][:event_urls])[0].attribute("href")
+      event.add_category(category)
+      event.save
+    end
   end
 
   def self.scrape_top_ten_events(category)
-    doc = Nokogiri::HTML(open("http://calendar.artsboston.org/"))
-    item_list = doc.search("section.list-blog article.blog-itm").each_with_index do | this_event, index |
-      event = self.new
-      event.name = this_event.search("h2.blog-ttl").text.strip
-      dates = this_event.search("div.left-event-time.evt-date-bubble")
-      event.dates = get_event_dates(dates)
-      sponsor_name = this_event.search("p.meta")[0].text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
-      event.add_sponsor(sponsor_name)
-      venue_name = this_event.search("p.meta")[0].text.split(" at ")[1].strip
-      event.add_venue(venue_name)
-      if this_event.search("div.b-btn.__inline_block_fix_space a")[1]
-        event.deal_url = this_event.search("div.b-btn.__inline_block_fix_space a")[1].attribute("href")
-      end
-      event.website_url = this_event.search("div.b-btn.__inline_block_fix_space a")[0].attribute("href")
-      event.add_category(category)
-      event.save
-    end #each with index
+    # doc = Nokogiri::HTML(open("http://calendar.artsboston.org/"))
+    # item_list = doc.search("section.list-blog article.blog-itm").each_with_index do | this_event, index |
+    #   event = self.new
+      # event.name = this_event.search("h2.blog-ttl").text.strip
+      # dates = this_event.search("div.left-event-time.evt-date-bubble")
+      # event.dates = get_event_dates(dates)
+      # sponsor_name = this_event.search("p.meta")[0].text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
+      # event.add_sponsor(sponsor_name)
+      # venue_name = this_event.search("p.meta")[0].text.split(" at ")[1].strip
+      # event.add_venue(venue_name)
+      # if this_event.search("div.b-btn.__inline_block_fix_space a")[1]
+      #   event.deal_url = this_event.search("div.b-btn.__inline_block_fix_space a")[1].attribute("href")
+      # end
+      # event.website_url = this_event.search("div.b-btn.__inline_block_fix_space a")[0].attribute("href")
+      # event.add_category(category)
+      # event.save
+    # end #each with index
   end
 
   def self.scrape_featured_event(doc, category)
