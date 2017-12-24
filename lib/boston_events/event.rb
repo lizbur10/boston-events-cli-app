@@ -20,8 +20,10 @@ class BostonEvents::Event
           scrape_events('top-ten',category,this_event)
         end
       else
-        doc = Nokogiri::HTML(open(SCRAPE_SELECTORS['featured'][:url] + "#{category}/"))
-        scrape_events('featured',category,this_event)
+        doc = Nokogiri::HTML(open(SCRAPE_SELECTORS['featured'][:url] + "#{category.name}/"))
+        item_list = doc.search(SCRAPE_SELECTORS['featured'][:iterate_over]).each_with_index do | this_event, index |
+          scrape_events('featured',category,this_event)
+        end
         item_list = doc.search(SCRAPE_SELECTORS['listed'][:iterate_over]).each_with_index do | this_event, index |
           scrape_events('listed',category,this_event)
         end
