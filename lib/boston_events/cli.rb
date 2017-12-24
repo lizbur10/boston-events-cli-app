@@ -3,7 +3,10 @@ class BostonEvents::CLI
   attr_accessor :category
 
   def call
-    puts "What's going on in Boston"
+    puts; puts
+    puts "Hi! Welcome to the Boston Events Finder -- your BEF friend in the Boston area!"
+    puts "You can quit this app at any time by typing exit."
+    puts; puts "Start by selecting a category:"
     input = nil
     while input != "exit"
       category = select_category
@@ -13,8 +16,7 @@ class BostonEvents::CLI
   end
 
   def select_category
-    puts "Select a category by number or type exit"
-    list_categories
+    puts_categories
       input = gets.strip.downcase
       case input
       when "1"
@@ -39,7 +41,7 @@ class BostonEvents::CLI
     # end # While
   end # #select_category
 
-  def list_categories
+  def puts_categories
     puts "1. Stage"
     puts "2. Music"
     puts "3. Art"
@@ -50,12 +52,12 @@ class BostonEvents::CLI
   end # #list_categories
 
   def list_events_in_category(category)
+    puts; puts "Here's what's happening in the #{category.name.capitalize} category:"
     puts
-    puts "Events in category: #{category.name.capitalize}"
     category.events.each.with_index(1) do | event, index |
       puts "#{index}. #{event.name}, #{event.dates}, presented by #{event.sponsor.name}"
     end #each
-    puts "Select an event to see more information or type 'list' to return to the category list."
+    puts; puts "Select an event to see more information or type 'list' to return to the category list."
     choose_event_to_view(category)
   end # #list_events_in_category
 
@@ -70,7 +72,7 @@ class BostonEvents::CLI
       elsif input == "exit"
         abort ("Thanks for stopping by -- come back often to check out what's going on around town!")
       else
-        puts "I'm not sure what you want - please enter a valid option."
+        puts "I'm not sure what you want - please enter a number between 1 and #{category.events.length} or type list."
       end # if/elsif/else
     end
   end
@@ -81,16 +83,17 @@ class BostonEvents::CLI
         puts_event_info(event)
       end
     end # detect
-    puts "Select another event or type 'list' to return to the category list."
+    puts; puts "Select another event or type 'list' to return to the category list."
   end
 
   def puts_event_info(event)
-    puts "Event: #{event.name}"
+    puts; puts "OK, here are the details:"
+    puts; puts "#{event.name}"
     puts "Dates: #{event.dates}"
     puts "Presented by #{event.sponsor.name}"
     puts "Venue: #{event.venue.name}"
-    puts "Check for deals: #{event.deal_url}" if event.deal_url
-    puts "Official website: #{event.website_url}" if event.website_url
+    puts "Event website: #{event.website_url}" if event.website_url
+    puts "Check Here for Deals: #{event.deal_url}" if event.deal_url
   end
 
 end # Class

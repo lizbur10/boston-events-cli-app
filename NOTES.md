@@ -4,7 +4,10 @@ To Do:
 2. Add sponsor functionality - DONE
 3. "More info" functionality - coded but needs to be checked - DONE
 4. Update CLI to work with 'More Info' functionality - DONE
-5. Refactor CLI
-6. REFACTOR EVENTS! Maybe with super class = event and subclasses top_ten, featured, listed
-7. Add "list by venue" functionality to CLI ???
-8. Add "list all" functionality to CLI ??????????????
+5. Refactor CLI - DONE (for now)
+6. Work on UI of CLI
+7. REFACTOR EVENTS! Maybe with super class = event and subclasses top_ten, featured, listed
+
+Future additions (?)
+8. Add "list by venue" functionality to CLI
+9. Add "list all" functionality to CLI
