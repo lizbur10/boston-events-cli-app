@@ -12,7 +12,7 @@ class BostonEvents::Event
     end
   end
 
-  def self.list_events(category)
+  def self.list_events(category) ##This needs to be refactored
     if category.events.length == 0
       if category.name == 'top-ten'
         doc = Nokogiri::HTML(open(SCRAPE_SELECTORS['top-ten'][:url]))
@@ -30,12 +30,6 @@ class BostonEvents::Event
       end
     end
   end
-
-  # def self.scrape_events(category)
-  #   # doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories/#{category.name}/"))
-  #   scrape_featured_event(doc, category)
-  #   scrape_listed_events(doc, category)
-  # end
 
   SCRAPE_SELECTORS = {
     "top-ten" => {
@@ -55,7 +49,12 @@ class BostonEvents::Event
       event_urls: "div.b-btn.cat-detail.__inline_block_fix_space a"
     },
     "listed" => {
-
+      url: "http://calendar.artsboston.org/categories/",
+      iterate_over: "section.list-category article.category-itm",
+      name: "h2.category-ttl",
+      dates: "div.left-event-time.evt-date-bubble",
+      sponsor_and_venue_names: "p.meta",
+      event_urls: "div.b-btn.category a"
     }
   }
 
@@ -71,47 +70,11 @@ class BostonEvents::Event
     if this_event.search(SCRAPE_SELECTORS[type][:event_urls])[1]
       event.deal_url = this_event.search(SCRAPE_SELECTORS[type][:event_urls])[1].attribute("href")
     end
-    event.website_url = this_event.search(SCRAPE_SELECTORS[type][:event_urls])[0].attribute("href")
+    if this_event.search(SCRAPE_SELECTORS[type][:event_urls])[0]
+      event.website_url = this_event.search(SCRAPE_SELECTORS[type][:event_urls])[0].attribute("href")
+    end
     event.add_category(category)
     event.save
-  end
-
-  def self.scrape_featured_event(doc, category)
-    # event = self.new
-    # event.name = doc.search("article.category-detail h1.p-ttl").text
-    # dates = doc.search("article.category-detail div.left-event-time.evt-date-bubble")
-    # event.dates = get_event_dates(dates)
-    # sponsor_name = doc.search("article.category-detail p.meta.auth a")[0].text
-    # event.add_sponsor(sponsor_name)
-    # venue_name = doc.search("p.meta")[0].text.split(" at ")[1].strip
-    # event.add_venue(venue_name)
-    # if doc.search("div.b-btn.cat-detail.__inline_block_fix_space a")[1]
-    #   event.deal_url = doc.search("div.b-btn.cat-detail.__inline_block_fix_space a")[1].attribute("href")
-    # end
-    # event.website_url = doc.search("div.b-btn.cat-detail.__inline_block_fix_space a")[0].attribute("href")
-    # event.add_category(category)
-    # event.save
-  end
-
-  def self.scrape_listed_events(doc, category)
-    item_list = doc.search("section.list-category article.category-itm").each_with_index do | this_event, index |
-      event = self.new
-      event.name = this_event.search("h2.category-ttl").text.strip
-      dates = this_event.search("div.left-event-time.evt-date-bubble")
-      event.dates = get_event_dates(dates)
-      sponsor_name = this_event.search("p.meta")[0].text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
-      event.add_sponsor(sponsor_name)
-      venue_name = this_event.search("p.meta")[0].text.split(" at ")[1].strip
-      event.add_venue(venue_name)
-      if this_event.search("div.b-btn.category a")[1]
-        event.deal_url = this_event.search("div.b-btn.category a")[1].attribute("href")
-      end
-      if this_event.search("div.b-btn.category a")[0]
-        event.website_url = this_event.search("div.b-btn.category a")[0].attribute("href")
-      end
-      event.add_category(category)
-      event.save
-    end #each with index
   end
 
   def self.get_event_dates(dates)

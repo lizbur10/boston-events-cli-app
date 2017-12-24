@@ -6,7 +6,7 @@ To Do:
 4. Update CLI to work with 'More Info' functionality - DONE
 5. Refactor CLI - DONE (for now)
 6. Work on UI of CLI - DONE
-7. REFACTOR EVENTS! create hash for scrape selectors?
+7. REFACTOR EVENTS! create hash for scrape selectors? - Done except for list_events method
 
 Future additions (?)
 8. Add "list by venue" functionality to CLI
