@@ -5,8 +5,8 @@ To Do:
 3. "More info" functionality - coded but needs to be checked - DONE
 4. Update CLI to work with 'More Info' functionality - DONE
 5. Refactor CLI - DONE (for now)
-6. Work on UI of CLI
-7. REFACTOR EVENTS! Maybe with super class = event and subclasses top_ten, featured, listed
+6. Work on UI of CLI - DONE
+7. REFACTOR EVENTS! somehow...
 
 Future additions (?)
 8. Add "list by venue" functionality to CLI

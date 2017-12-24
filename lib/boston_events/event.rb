@@ -13,7 +13,7 @@ class BostonEvents::Event
   end
 
   def self.list_events(category)
-    if category.events.length == 0 #to keep events from being created twice if the same category is chosen more than once
+    if category.events.length == 0
       if category.name == 'top-ten'
         scrape_top_ten_events(category)
       else
@@ -22,10 +22,26 @@ class BostonEvents::Event
     end
   end
 
-  def self.scrape_events(category)
-    doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories/#{category.name}/"))
-    scrape_featured_event(doc, category)
-    scrape_listed_events(doc, category)
+  # def self.scrape_events(category)
+  #   doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories/#{category.name}/"))
+  #   scrape_featured_event(doc, category)
+  #   scrape_listed_events(doc, category)
+  # end
+
+  SCRAPE_SELECTORS = {
+    "top-ten" => {
+      url: "http://calendar.artsboston.org/",
+      iterate_over: "section.list-blog article.blog-itm",
+      name: "h2.blog-ttl",
+      dates: "div.left-event-time.evt-date-bubble",
+      sponsor_and_venue_names: "p.meta",
+      deal_url: "div.b-btn.__inline_block_fix_space a",
+      website_url: "div.b-btn.__inline_block_fix_space a"
+    }
+  }
+
+  def self.scrape_event(type)
+    
   end
 
   def self.scrape_top_ten_events(category)
