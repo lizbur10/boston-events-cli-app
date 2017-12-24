@@ -7,7 +7,8 @@ To Do:
 5. Refactor CLI - DONE (for now)
 6. Work on UI of CLI - DONE
 7. REFACTOR EVENTS! create hash for scrape selectors? - Done except for list_events method
+8. 
 
 Future additions (?)
-8. Add "list by venue" functionality to CLI
-9. Add "list all" functionality to CLI
+* Add "list by venue" functionality to CLI
+* Add "list all" functionality to CLI
