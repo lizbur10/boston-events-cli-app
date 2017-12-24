@@ -2,13 +2,13 @@
 class BostonEvents::CLI
 
   def call
+    puts "What's going on in Boston"
     menu
     # list_events
     # goodbye
   end
 
   def menu
-    puts "What's going on in Boston"
     puts "Select a category by number or type exit"
     list_categories
     input = nil
@@ -29,11 +29,12 @@ class BostonEvents::CLI
         abort ("Thanks for stopping by -- come back often to check out what's going on around town!")
       else
         puts "I'm not sure what you want - please enter a category number or type exit"
-        call
+        menu
       end # Case statement
       category = BostonEvents::Category.find_or_create_by_name(category_name)
       BostonEvents::Event.list_events(category)
       puts_events(category)
+
     end # While
   end # #menu
 
@@ -53,12 +54,11 @@ class BostonEvents::CLI
       puts "#{index}. #{event.name}, #{event.dates}, presented by #{event.sponsor.name}"
     end #each
     puts "Select an event to see more information or type 'list' to return to the category list."
-    input = gets.strip.downcase
-    category.events.detect.with_index(1) do | event, index |
-      if input.to_i == index
-        puts_event_info(event)
-      end # if
-    end # detect
+    input = nil
+    while input != 'exit'
+      input = gets.strip.downcase
+      choose_option(input, category)
+    end
   end # #puts_events
 
   def puts_event_info(event)
@@ -66,8 +66,29 @@ class BostonEvents::CLI
     puts "Dates: #{event.dates}"
     puts "Presented by #{event.sponsor.name}"
     puts "Venue: #{event.venue.name}"
-    puts "Check for deals: #{event.deal_url}"
-    puts "Buy tickets through venue: #{event.website_url}"
+    puts "Check for deals: #{event.deal_url}" if event.deal_url
+    puts "Buy tickets through venue: #{event.website_url}" if event.website_url
   end # #puts_event_info
+
+  def choose_option(input, category)
+    if input.to_i >= 1 && input.to_i <= category.events.length
+      select_event(category, input)
+    elsif input == "list"
+      menu
+    elsif input == "exit"
+      abort ("Thanks for stopping by -- come back often to check out what's going on around town!")
+    else
+      puts "I'm not sure what you want - please enter a valid option."
+    end # if/elsif/else
+  end
+
+  def select_event(category, input)
+    category.events.detect.with_index(1) do | event, index |
+      if input.to_i == index
+        puts_event_info(event)
+      end
+    end # detect
+    puts "Select another event or type 'list' to return to the category list."
+  end
 
 end # Class

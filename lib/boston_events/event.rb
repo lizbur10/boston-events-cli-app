@@ -78,7 +78,9 @@ class BostonEvents::Event
       if this_event.search("div.b-btn.category a")[1]
         event.deal_url = this_event.search("div.b-btn.category a")[1].attribute("href")
       end
-      event.website_url = this_event.search("div.b-btn.category a")[0].attribute("href")
+      if this_event.search("div.b-btn.category a")[0]
+        event.website_url = this_event.search("div.b-btn.category a")[0].attribute("href")
+      end
       event.add_category(category)
       event.save
     end #each with index
