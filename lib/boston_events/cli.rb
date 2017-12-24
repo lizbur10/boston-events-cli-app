@@ -32,7 +32,7 @@ class BostonEvents::CLI
       when "6"
         category_name = "top-ten"
       when "exit"
-        abort ("Thanks for stopping by -- come back often to check out what's going on around town!")
+        abort ("\nThanks for stopping by -- come back often to check out what's going on around town!")
       else
         puts "I'm not sure what you want - please enter a category number or type exit"
         select_category
@@ -70,7 +70,7 @@ class BostonEvents::CLI
       elsif input == "list"
         call
       elsif input == "exit"
-        abort ("Thanks for stopping by -- come back often to check out what's going on around town!")
+        abort ("\nThanks for stopping by -- come back often to check out what's going on around town!")
       else
         puts "I'm not sure what you want - please enter a number between 1 and #{category.events.length} or type list."
       end # if/elsif/else
@@ -89,7 +89,7 @@ class BostonEvents::CLI
   def puts_event_info(event)
     puts; puts "OK, here are the details:"
     puts; puts "#{event.name}"
-    puts "Dates: #{event.dates}"
+    puts "Date(s): #{event.dates}"
     puts "Presented by #{event.sponsor.name}"
     puts "Venue: #{event.venue.name}"
     puts "Event website: #{event.website_url}" if event.website_url
