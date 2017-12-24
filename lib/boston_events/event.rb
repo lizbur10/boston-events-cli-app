@@ -14,16 +14,16 @@ class BostonEvents::Event
 
   def self.list_events(category)
     if category.events.length == 0
-      if category.name == 'top-ten'
-        scrape_top_ten_events(category)
-      else
+      # if category.name == 'top-ten'
+      #   scrape_top_ten_events(category)
+      # else
         scrape_events(category)
-      end
+      # end
     end
   end
 
   # def self.scrape_events(category)
-  #   doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories/#{category.name}/"))
+  #   # doc = Nokogiri::HTML(open("http://calendar.artsboston.org/categories/#{category.name}/"))
   #   scrape_featured_event(doc, category)
   #   scrape_listed_events(doc, category)
   # end
@@ -40,8 +40,10 @@ class BostonEvents::Event
     }
   }
 
-  def self.scrape_event(type)
-    
+  def self.scrape_events(category)
+    binding.pry
+    doc = Nokogiri::HTML(open(SCRAPE_SELECTORS[category.name][:url]))
+    binding.pry
   end
 
   def self.scrape_top_ten_events(category)
