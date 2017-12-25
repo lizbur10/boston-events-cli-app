@@ -1,4 +1,5 @@
 class BostonEvents::Sponsor
+
   attr_accessor :name, :events
 
   @@all = []

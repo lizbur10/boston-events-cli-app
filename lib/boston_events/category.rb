@@ -1,4 +1,5 @@
 class BostonEvents::Category
+  
   attr_accessor :name, :events
 
   @@all = []

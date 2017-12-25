@@ -48,7 +48,6 @@ class BostonEvents::CLI
     puts "4. Culture"
     puts "5. Kids"
     puts "6. Top Ten"
-    puts "7. All events (not yet implemented)"
   end # #list_categories
 
   def list_events_in_category(category)
