@@ -7,9 +7,9 @@ To Do:
 5. DONE (for now) - Refactor CLI
 6. DONE - Work on UI of CLI
 7. DONE - REFACTOR EVENTS! create hash for scrape selectors? - Done except for list_events method
-8. Create README
+8. DONE - Create README
 9. DONE - Go through code one more time looking for opportunities to refactor/simplify
-10. Release gem (http://guides.rubygems.org/publishing/)
+10. Release gem (http://guides.rubygems.org/publishing/) - can't get this to work; keep getting  access denied
 11. DONE - Add explanations for each item in spec.md
 12. Create video demo
 13. DONE - Finish blog post

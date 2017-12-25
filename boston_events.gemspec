@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = "Returns of list of events happening in Boston"
   spec.description   = "This application provides a CLI that allows you to view current events (stage, music, art, etc.) going on in the Boston area, as identified by the ArtsBoston website (http://calendar.artsboston.org/). A link is provided (when available) to the event's page on www.Bostix.org, which offers tickets at discounted prices."
   # spec.executables   << "boston_events"
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https://github.com/lizbur10/boston-events-cli-app"
   spec.license       = "MIT"
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})

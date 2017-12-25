@@ -4,23 +4,11 @@ This application provides a CLI that allows you to view current events (stage, m
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'boston_events'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install boston_events
+To install this gem, fork and clone the github repo here: https://github.com/lizbur10/boston-events-cli-app
 
 ## Usage
 
-TODO: Write usage instructions here
+Type ./bin/boston_events to run the app. Follow the on-screen instructions.
 
 ## Development
 
