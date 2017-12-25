@@ -1,8 +1,6 @@
 # BostonEvents
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/boston_events`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This application provides a CLI that allows you to view current events (stage, music, art, etc.) going on in the Boston area, as identified by the ArtsBoston website (http://calendar.artsboston.org/). A link is provided (when available) to the event's page on www.Bostix.org, which offers tickets at discounted prices.
 
 ## Installation
 

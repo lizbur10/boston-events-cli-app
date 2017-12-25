@@ -8,10 +8,11 @@ To Do:
 6. DONE - Work on UI of CLI
 7. DONE - REFACTOR EVENTS! create hash for scrape selectors? - Done except for list_events method
 8. Create README
-9. Add explanations for each item in spec.md
-10. Create video demo
-11. Finish blog post
-12. Looking through resources on learn page and update code as needed
+9. Release gem (http://guides.rubygems.org/publishing/)
+10. Add explanations for each item in spec.md
+11. Create video demo
+12. Finish blog post
+13. Look through resources on learn page and update code as needed
 
 Future additions (?)
 * Add "list by venue" functionality to CLI
