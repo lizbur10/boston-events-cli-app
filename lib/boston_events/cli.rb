@@ -17,28 +17,27 @@ class BostonEvents::CLI
 
   def select_category
     puts_categories
-      input = gets.strip.downcase
-      case input
-      when "1"
-        category_name = "stage"
-      when "2"
-        category_name = "music"
-      when "3"
-        category_name = "art"
-      when "4"
-        category_name = "culture"
-      when "5"
-        category_name = "kids"
-      when "6"
-        category_name = "top-ten"
-      when "exit"
-        abort ("\nThanks for stopping by -- come back often to check out what's going on around town!")
-      else
-        puts "I'm not sure what you want - please enter a category number or type exit"
-        select_category
-      end # Case statement
-      BostonEvents::Category.find_or_create_by_name(category_name)
-    # end # While
+    input = gets.strip.downcase
+    case input
+    when "1"
+      category_name = "stage"
+    when "2"
+      category_name = "music"
+    when "3"
+      category_name = "art"
+    when "4"
+      category_name = "culture"
+    when "5"
+      category_name = "kids"
+    when "6"
+      category_name = "top-ten"
+    when "exit"
+      abort ("\nThanks for stopping by -- come back often to check out what's going on around town!")
+    else
+      puts "I'm not sure what you want - please enter a category number or type exit"
+      select_category
+    end # Case statement
+    BostonEvents::Category.find_or_create_by_name(category_name)
   end # #select_category
 
   def puts_categories
@@ -48,7 +47,7 @@ class BostonEvents::CLI
     puts "4. Culture"
     puts "5. Kids"
     puts "6. Top Ten"
-  end # #list_categories
+  end # #puts_categories
 
   def list_events_in_category(category)
     puts; puts "Here's what's happening in the #{category.name.capitalize} category:"
