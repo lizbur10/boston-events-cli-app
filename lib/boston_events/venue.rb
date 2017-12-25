@@ -17,7 +17,7 @@ class BostonEvents::Venue
   end
 
   def self.find_or_create_by_name(name)
-    @@all.detect { | venue | venue.name == name } || create_by_name(name)
+    self.all.detect { | venue | venue.name == name } || create_by_name(name)
   end
 
 end
