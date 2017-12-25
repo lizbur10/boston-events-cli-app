@@ -14,6 +14,11 @@ To Do:
 12. Create video demo
 13. DONE - Finish blog post
 
+Questions
+1. 404 error (when there's a network hiccup) crashes the program - catch procedure?
+2. long URLs that wrap are broken
+3. Access denied error when trying to publish the gem
+
 Future additions (?)
 * Add "list by venue" functionality to CLI
 * Add "list all" functionality to CLI
