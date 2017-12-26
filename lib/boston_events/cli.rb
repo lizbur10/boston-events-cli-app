@@ -20,16 +20,20 @@ class BostonEvents::CLI
     input = gets.strip.downcase
     case input
     when "1"
-      category_name = "stage"
+      category_name = "bostix-deals"
     when "2"
-      category_name = "music"
+      category_name = "stage"
     when "3"
-      category_name = "art"
+      category_name = "music"
     when "4"
-      category_name = "culture"
+      category_name = "art"
     when "5"
-      category_name = "kids"
+      category_name = "culture"
     when "6"
+      category_name = "kids"
+    when "7"
+      category_name = "free-events"
+    when "8"
       category_name = "top-ten"
     when "exit"
       abort ("\nThanks for stopping by -- come back often to check out what's going on around town!")
@@ -41,12 +45,14 @@ class BostonEvents::CLI
   end # #select_category
 
   def puts_categories
-    puts "1. Stage"
-    puts "2. Music"
-    puts "3. Art"
-    puts "4. Culture"
-    puts "5. Kids"
-    puts "6. Top Ten"
+    puts "1. Bostix Deals"
+    puts "2. Stage"
+    puts "3. Music"
+    puts "4. Art"
+    puts "5. Culture"
+    puts "6. Kids"
+    puts "7. Free Events"
+    puts "8. Top Ten"
   end # #puts_categories
 
   def list_events_in_category(category)

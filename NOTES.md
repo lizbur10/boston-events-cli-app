@@ -13,6 +13,9 @@ To Do:
 11. DONE - Add explanations for each item in spec.md
 12. DONE - Create video demo
 13. DONE - Finish blog post
+14. Refactor to include Scraper class
+15. Refactor to scrape categories
+16. Add "More info?" with open in browser window
 
 Questions
 1. 404 error (when there's a network hiccup) crashes the program - catch procedure?
