@@ -11,7 +11,7 @@ To Do:
 9. DONE - Go through code one more time looking for opportunities to refactor/simplify
 10. Release gem (http://guides.rubygems.org/publishing/) - can't get this to work; keep getting  access denied
 11. DONE - Add explanations for each item in spec.md
-12. Create video demo
+12. DONE - Create video demo
 13. DONE - Finish blog post
 
 Questions

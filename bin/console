@@ -10,5 +10,9 @@ require "boston_events"
 # require "pry"
 # Pry.start
 
+def reload!
+  load_all './lib'
+end
+
 require "irb"
 IRB.start(__FILE__)
