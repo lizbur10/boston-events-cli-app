@@ -13,12 +13,12 @@ To Do:
 11. DONE - Add explanations for each item in spec.md
 12. DONE - Create video demo
 13. DONE - Finish blog post
-14. Refactor to include Scraper class
+14. DONE - Refactor to include Scraper class
 15. Refactor to scrape categories
 16. Add "More info?" with open in browser window
-17. Add "retrieving events" message while scrape is happening
+17. DONE - Add "retrieving events" message while scrape is happening
 18. Make variable names more specific (?)
-19. Make doc a class variable
+19. DONE - Make doc a class variable
 
 Questions
 1. 404 error (when there's a network hiccup) crashes the program - catch procedure?
