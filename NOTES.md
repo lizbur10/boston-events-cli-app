@@ -16,6 +16,7 @@ To Do:
 14. Refactor to include Scraper class
 15. Refactor to scrape categories
 16. Add "More info?" with open in browser window
+17. Add "retrieving events" message while scrape is happening
 
 Questions
 1. 404 error (when there's a network hiccup) crashes the program - catch procedure?
