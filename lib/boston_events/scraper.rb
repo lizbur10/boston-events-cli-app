@@ -1,7 +1,7 @@
 class BostonEvents::Scraper
   attr_accessor :doc
 
-  SCRAPE_SELECTORS = {
+  EVENT_SELECTORS = {
     "top-ten" => {
       url: "http://calendar.artsboston.org/",
       iterate_over: "section.list-blog article.blog-itm",
@@ -29,36 +29,36 @@ class BostonEvents::Scraper
   }
 
   def initialize(category)
-    launch_scrape(category)
+    launch_event_scrape(category)
   end
 
-  def launch_scrape(category)
+  def launch_event_scrape(category)
     if category.name == 'top-ten'
-      @doc = Nokogiri::HTML(open(SCRAPE_SELECTORS['top-ten'][:url]))
+      @doc = Nokogiri::HTML(open(EVENT_SELECTORS['top-ten'][:url]))
       scrape_events(category, 'top-ten')
     else
-      @doc = Nokogiri::HTML(open(SCRAPE_SELECTORS['featured'][:url] + "#{category.name}/"))
+      @doc = Nokogiri::HTML(open(EVENT_SELECTORS['featured'][:url] + "#{category.name}/"))
       scrape_events(category, 'featured')
       scrape_events(category, 'listed')
     end # if/else
   end
 
   def scrape_events(category, type)
-    item_list = @doc.search(SCRAPE_SELECTORS[type][:iterate_over]).each_with_index do | this_event, index |
+    item_list = @doc.search(EVENT_SELECTORS[type][:iterate_over]).each_with_index do | this_event, index |
       event = BostonEvents::Event.new
-      event.name = this_event.search(SCRAPE_SELECTORS[type][:name]).text.strip
+      event.name = this_event.search(EVENT_SELECTORS[type][:name]).text.strip
 
-      dates = this_event.search(SCRAPE_SELECTORS[type][:dates])
+      dates = this_event.search(EVENT_SELECTORS[type][:dates])
       event.dates = get_event_dates(dates)
 
-      sponsor_name = this_event.search(SCRAPE_SELECTORS[type][:sponsor_and_venue_names])[0].text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
+      sponsor_name = this_event.search(EVENT_SELECTORS[type][:sponsor_and_venue_names])[0].text.strip.gsub("Presented by ","").gsub(/  at .*/,"")
       event.add_sponsor(sponsor_name)
 
-      venue_name = this_event.search(SCRAPE_SELECTORS[type][:sponsor_and_venue_names])[0].text.split(" at ")[1].strip
+      venue_name = this_event.search(EVENT_SELECTORS[type][:sponsor_and_venue_names])[0].text.split(" at ")[1].strip
       event.add_venue(venue_name)
 
-      event.deal_url = this_event.search(SCRAPE_SELECTORS[type][:event_urls])[1].attribute("href") if this_event.search(SCRAPE_SELECTORS[type][:event_urls])[1]
-      event.website_url = this_event.search(SCRAPE_SELECTORS[type][:event_urls])[0].attribute("href") if this_event.search(SCRAPE_SELECTORS[type][:event_urls])[0]
+      event.deal_url = this_event.search(EVENT_SELECTORS[type][:event_urls])[1].attribute("href") if this_event.search(EVENT_SELECTORS[type][:event_urls])[1]
+      event.website_url = this_event.search(EVENT_SELECTORS[type][:event_urls])[0].attribute("href") if this_event.search(EVENT_SELECTORS[type][:event_urls])[0]
 
       event.add_category(category)
       event.save
