@@ -45,17 +45,12 @@ class BostonEvents::CLI
   end # #select_category
 
   def puts_categories
-    categories = BostonEvents::Scraper.scrape_categories
-    categories.each.with_index(1) do | category |
-      puts "1. Bostix Deals"
-      puts "2. Stage"
-      puts "3. Music"
-      puts "4. Art"
-      puts "5. Culture"
-      puts "6. Kids"
-      puts "7. Free Events"
-      puts "8. Top Ten"
+    scraper = BostonEvents::Scraper.new
+    categories = scraper.scrape_categories
+    categories[:labels].each.with_index(1) do | label, index |
+      puts "#{index}. #{label}"
     end
+      puts "#{categories[:labels].length + 1}. Top Ten"
   end # #puts_categories
 
   def list_events_in_category(category)
