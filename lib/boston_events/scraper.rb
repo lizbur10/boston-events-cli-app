@@ -35,7 +35,7 @@ class BostonEvents::Scraper
 
   def scrape_categories
     doc = Nokogiri::HTML(open("http://calendar.artsboston.org/"))
-    doc.search("nav.mn-menu li a").collect { | link | link.attribute("href").text.gsub("/categories/","").gsub("/","") }
+    doc.search("ul#menu-primary-navigation > li a").collect { | link | link.attribute("href").text.gsub("/categories/","").gsub("/","") }
   end
 
   def launch_event_scrape(category)
