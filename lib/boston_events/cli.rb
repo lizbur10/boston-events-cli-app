@@ -98,6 +98,17 @@ class BostonEvents::CLI
     puts "Venue: #{event.venue.name}"
     puts "Event website: #{event.website_url}" if event.website_url
     puts "Check Here for Deals: #{event.deal_url}" if event.deal_url
+    # puts; puts "Would you like to see more info?" if event.website_url
+    # input = gets.strip.downcase
+    # if ( input == "yes" || input == "y" )
+    #   open_in_browser(event.website_url)
+    # else
+    #   ##do something else
+    # end
   end
+
+  # def open_in_browser(url)
+  #   system("open '#{url}'")
+  # end
 
 end # Class
