@@ -11,7 +11,7 @@ require "boston_events"
 # Pry.start
 
 def reload!
-  load_all './lib'
+  load './lib'
 end
 
 require "irb"
