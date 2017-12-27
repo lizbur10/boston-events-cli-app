@@ -28,8 +28,14 @@ class BostonEvents::Scraper
     }
   }
 
+  ##### This will need to change
   def initialize(category)
     launch_event_scrape(category)
+  end
+
+  def scrape_categories
+    doc = Nokogiri::HTML(open("http://calendar.artsboston.org/"))
+    binding.pry
   end
 
   def launch_event_scrape(category)
