@@ -11,9 +11,7 @@ class BostonEvents::CLI
     scraper = BostonEvents::Scraper.new
     while input != "exit"
       # binding.pry
-      category = select_category(scraper)
-      BostonEvents::Event.list_events(scraper, category)
-      list_events_in_category(scraper, category)
+      select_category(scraper)
     end #while
   end
 
@@ -25,39 +23,36 @@ class BostonEvents::CLI
     end
 
     input = gets.strip.downcase
-    if input.to_i > 0 && input.to_i <= scraper.categories[:labels].length + 1
-      scraper.categories[:labels].each.with_index(1) do | label, index |
-        if input.to_i == index
-          category = BostonEvents::Category.find_or_create_by_name(label)
-        end
-      end # each
-      category
+    if input.to_i > 0 && input.to_i <= scraper.categories[:urls].length
+      category = BostonEvents::Category.find_or_create_by_name(scraper.categories[:labels][input.to_i-1], scraper.categories[:urls][input.to_i-1])
     elsif input == "exit"
       abort ("\nThanks for stopping by -- come back often to check out what's going on around town!")
     else
       puts "I'm not sure what you want - please enter a category number or type exit"
       select_category(scraper)
     end # if/elsif/else
+    BostonEvents::Event.list_events(scraper, category)
+    list_events_in_category(scraper, category)
   end # #select_category
 
-  def list_events_in_category(category)
+  def list_events_in_category(scraper, category)
     puts; puts "Here's what's happening in the #{category.name.capitalize} category:"
     puts
     category.events.each.with_index(1) do | event, index |
       puts "#{index}. #{event.name}, #{event.dates}, presented by #{event.sponsor.name}"
     end #each
     puts; puts "Select an event to see more information or type 'list' to return to the category list."
-    choose_event_to_view(category)
+    choose_event_to_view(scraper, category)
   end # #list_events_in_category
 
-  def choose_event_to_view(category)
+  def choose_event_to_view(scraper, category)
     input = nil
     while input != 'exit'
       input = gets.strip.downcase
       if input.to_i >= 1 && input.to_i <= category.events.length
         return_event_info(category, input)
       elsif input == "list"
-        call
+        select_category(scraper)
       elsif input == "exit"
         abort ("\nThanks for stopping by -- come back often to check out what's going on around town!")
       else

@@ -13,8 +13,7 @@ class BostonEvents::Event
   def self.list_events(scraper, category)
     if category.events.length == 0
       puts "Retrieving events..."
-#      scraper = BostonEvents::Scraper.new(category)
-      scraper.launch_event_scrape(category)
+      scraper.route_event_scrape(category)
     end
   end
 

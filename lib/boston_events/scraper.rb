@@ -33,7 +33,7 @@ class BostonEvents::Scraper
     @categories = {}
     @categories[:urls] = []
     @categories[:labels] = []
-    doc = Nokogiri::HTML(open("http://calendar.artsboston.org/stage/"))
+    doc = Nokogiri::HTML(open("http://calendar.artsboston.org/"))
     doc.search(".main-menu .mn-menu .nav > li > a").each do | link |
       url = link.attribute("href").text.gsub("/categories/","").gsub("/","")
       if !@categories[:urls].include?(url)
@@ -45,12 +45,12 @@ class BostonEvents::Scraper
     @categories[:labels] << 'Top Ten'
   end
 
-  def launch_event_scrape(category)
-    if category.name == 'top-ten'
+  def route_event_scrape(category)
+    if category.url == 'top-ten'
       @doc = Nokogiri::HTML(open(EVENT_SELECTORS['top-ten'][:url]))
       scrape_events(category, 'top-ten')
     else
-      @doc = Nokogiri::HTML(open(EVENT_SELECTORS['featured'][:url] + "#{category.name}/"))
+      @doc = Nokogiri::HTML(open(EVENT_SELECTORS['featured'][:url] + "#{category.url}/"))
       scrape_events(category, 'featured')
       scrape_events(category, 'listed')
     end # if/else

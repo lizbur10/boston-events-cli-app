@@ -15,10 +15,9 @@ To Do:
 13. DONE - Finish blog post
 14. DONE - Refactor to include Scraper class
 15. Refactor to scrape categories
-16. Add "More info?" with open in browser window
-17. DONE - Add "retrieving events" message while scrape is happening
-18. Make variable names more specific (?)
-19. DONE - Make doc a class variable
+16. DONE - Add "retrieving events" message while scrape is happening
+17. Make variable names more specific (?)
+18. DONE - Make doc a class variable
 
 Questions
 1. 404 error (when there's a network hiccup) crashes the program - catch procedure?
@@ -28,3 +27,4 @@ Questions
 Future additions (?)
 * Add "list by venue" functionality to CLI
 * Add "list all" functionality to CLI
+* Add "More info?" for events -> open in browser window if yes
