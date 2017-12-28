@@ -41,7 +41,8 @@ class BostonEvents::Scraper
         @categories[:labels] << link.text.strip
       end
     end
-    @categories
+    @categories[:urls] << 'top-ten'
+    @categories[:labels] << 'Top Ten'
   end
 
   def launch_event_scrape(category)

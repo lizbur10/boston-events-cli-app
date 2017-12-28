@@ -10,6 +10,7 @@ class BostonEvents::CLI
     input = nil
     scraper = BostonEvents::Scraper.new
     while input != "exit"
+      # binding.pry
       category = select_category(scraper)
       BostonEvents::Event.list_events(scraper, category)
       list_events_in_category(scraper, category)
@@ -22,23 +23,21 @@ class BostonEvents::CLI
     scraper.categories[:labels].each.with_index(1) do | label, index |
       puts "#{index}. #{label}"
     end
-    puts "#{scraper.categories[:labels].length + 1}. Top Ten"
 
     input = gets.strip.downcase
     if input.to_i > 0 && input.to_i <= scraper.categories[:labels].length + 1
       scraper.categories[:labels].each.with_index(1) do | label, index |
         if input.to_i == index
           category = BostonEvents::Category.find_or_create_by_name(label)
-          binding.pry
         end
       end # each
+      category
     elsif input == "exit"
       abort ("\nThanks for stopping by -- come back often to check out what's going on around town!")
     else
       puts "I'm not sure what you want - please enter a category number or type exit"
       select_category(scraper)
     end # if/elsif/else
-    category
   end # #select_category
 
   def list_events_in_category(category)
