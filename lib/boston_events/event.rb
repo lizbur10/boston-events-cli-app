@@ -10,10 +10,11 @@ class BostonEvents::Event
     @@all << self if !self.class.all.detect { | saved_event | saved_event.name == self.name }
   end
 
-  def self.list_events(category)
+  def self.list_events(scraper, category)
     if category.events.length == 0
       puts "Retrieving event information..."
-      scraper = BostonEvents::Scraper.new(category)
+#      scraper = BostonEvents::Scraper.new(category)
+      scraper.launch_event_scrape(category)
     end
   end
 

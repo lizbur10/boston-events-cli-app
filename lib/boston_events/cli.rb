@@ -8,50 +8,34 @@ class BostonEvents::CLI
     puts "You can quit this app at any time by typing exit."
     puts; puts "Start by selecting a category:"
     input = nil
+    scraper = BostonEvents::Scraper.new
     while input != "exit"
-      category = select_category
+      category = select_category(scraper)
       BostonEvents::Event.list_events(category)
-      list_events_in_category(category)
+      list_events_in_category(scraper, category)
     end #while
   end
 
-  def select_category
-    puts_categories
-    input = gets.strip.downcase
-    case input
-    when "1"
-      category_name = "bostix-deals"
-    when "2"
-      category_name = "stage"
-    when "3"
-      category_name = "music"
-    when "4"
-      category_name = "art"
-    when "5"
-      category_name = "culture"
-    when "6"
-      category_name = "kids"
-    when "7"
-      category_name = "free-events"
-    when "8"
-      category_name = "top-ten"
-    when "exit"
-      abort ("\nThanks for stopping by -- come back often to check out what's going on around town!")
-    else
-      puts "I'm not sure what you want - please enter a category number or type exit"
-      select_category
-    end # Case statement
-    BostonEvents::Category.find_or_create_by_name(category_name)
-  end # #select_category
-
-  def puts_categories
-    scraper = BostonEvents::Scraper.new
-    categories = scraper.scrape_categories
-    categories[:labels].each.with_index(1) do | label, index |
+  def select_category(scraper)
+    scraper.categories == nil ? scraper.scrape_categories : scraper.categories
+    scraper.categories[:labels].each.with_index(1) do | label, index |
       puts "#{index}. #{label}"
     end
-      puts "#{categories[:labels].length + 1}. Top Ten"
-  end # #puts_categories
+    puts "#{scraper.categories[:labels].length + 1}. Top Ten"
+
+    input = gets.strip.downcase
+    scraper.categories[:labels].each.with_index(1) do | label, index |
+      if input.to_i == index
+        category = BostonEvents::Category.find_or_create_by_name(label)
+      elsif input == "exit"
+        abort ("\nThanks for stopping by -- come back often to check out what's going on around town!")
+      else
+        puts "I'm not sure what you want - please enter a category number or type exit"
+        select_category(scraper)
+      end # if/elsif/else
+    end # each
+    category
+  end # #select_category
 
   def list_events_in_category(category)
     puts; puts "Here's what's happening in the #{category.name.capitalize} category:"

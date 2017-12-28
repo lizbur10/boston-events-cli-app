@@ -1,5 +1,6 @@
 class BostonEvents::Scraper
-  attr_accessor :doc
+  attr_accessor :doc, :categories
+
 
   EVENT_SELECTORS = {
     "top-ten" => {
@@ -34,18 +35,18 @@ class BostonEvents::Scraper
   # end
 
   def scrape_categories
-    categories = {}
-    categories[:urls] = []
-    categories[:labels] = []
+    @categories = {}
+    @categories[:urls] = []
+    @categories[:labels] = []
     doc = Nokogiri::HTML(open("http://calendar.artsboston.org/stage/"))
     doc.search(".main-menu .mn-menu .nav > li > a").each do | link |
       url = link.attribute("href").text.gsub("/categories/","").gsub("/","")
-      if !categories[:urls].include?(url)
-        categories[:urls] << url
-        categories[:labels] << link.text.strip
+      if !@categories[:urls].include?(url)
+        @categories[:urls] << url
+        @categories[:labels] << link.text.strip
       end
     end
-    categories
+    @categories
   end
 
   def launch_event_scrape(category)
