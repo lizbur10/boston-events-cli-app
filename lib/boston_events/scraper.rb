@@ -29,11 +29,6 @@ class BostonEvents::Scraper
     }
   }
 
-  ##### This will need to change
-  # def initialize(category)
-  #   launch_event_scrape(category)
-  # end
-
   def scrape_categories
     @categories = {}
     @categories[:urls] = []

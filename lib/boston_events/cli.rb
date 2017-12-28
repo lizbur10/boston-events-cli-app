@@ -6,34 +6,38 @@ class BostonEvents::CLI
     puts; puts
     puts "Hi! Welcome to the Boston Events Finder -- your BEF friend in the Boston area!"
     puts "You can quit this app at any time by typing exit."
-    puts; puts "Start by selecting a category:"
+    puts; puts "Categories loading..."
     input = nil
     scraper = BostonEvents::Scraper.new
     while input != "exit"
       category = select_category(scraper)
-      BostonEvents::Event.list_events(category)
+      BostonEvents::Event.list_events(scraper, category)
       list_events_in_category(scraper, category)
     end #while
   end
 
   def select_category(scraper)
     scraper.categories == nil ? scraper.scrape_categories : scraper.categories
+    puts; puts "Start by selecting a category:"
     scraper.categories[:labels].each.with_index(1) do | label, index |
       puts "#{index}. #{label}"
     end
     puts "#{scraper.categories[:labels].length + 1}. Top Ten"
 
     input = gets.strip.downcase
-    scraper.categories[:labels].each.with_index(1) do | label, index |
-      if input.to_i == index
-        category = BostonEvents::Category.find_or_create_by_name(label)
-      elsif input == "exit"
-        abort ("\nThanks for stopping by -- come back often to check out what's going on around town!")
-      else
-        puts "I'm not sure what you want - please enter a category number or type exit"
-        select_category(scraper)
-      end # if/elsif/else
-    end # each
+    if input.to_i > 0 && input.to_i <= scraper.categories[:labels].length + 1
+      scraper.categories[:labels].each.with_index(1) do | label, index |
+        if input.to_i == index
+          category = BostonEvents::Category.find_or_create_by_name(label)
+          binding.pry
+        end
+      end # each
+    elsif input == "exit"
+      abort ("\nThanks for stopping by -- come back often to check out what's going on around town!")
+    else
+      puts "I'm not sure what you want - please enter a category number or type exit"
+      select_category(scraper)
+    end # if/elsif/else
     category
   end # #select_category
 
