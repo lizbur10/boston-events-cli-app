@@ -16,11 +16,13 @@ To Do:
 14. DONE - Refactor to scrape categories
 15. DONE - Add "retrieving events" message while scrape is happening
 16. DONE - Make doc a class variable
+17. DONE - Merge scrape_categories branch into master
 
 Questions
 1. long URLs that wrap are broken
 2. Access denied error when trying to publish the gem
 3. Instructions for Installation/Usage/Development on README
+4. rspec error when running console
 
 Future additions (?)
 * Add "list by venue" functionality to CLI
