@@ -4,7 +4,7 @@ class BostonEvents::CLI
 
   def call
     puts; puts
-    puts "Hi! Welcome to the Boston Events Finder -- your BEF friend in the Boston area!"
+    puts "Hi! Welcome to the Boston Events Finder"
     puts "You can quit this app at any time by typing exit."
     puts; puts "Categories loading..."
     input = nil
